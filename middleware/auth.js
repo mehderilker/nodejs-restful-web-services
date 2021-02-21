@@ -6,13 +6,11 @@ const Auth = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer','').trim()
         const decoded = jwt.verify(token, "devToken")
 
-        console.log("decoder");
         const user = await User.findOne({_id: decoded._id,'tokens.token':token})
-    
+
         res.token = token
         req.user = user
-        next()
-    
+        next()  
     }catch(e){
         console.log(e)
         res.status(401).send({
